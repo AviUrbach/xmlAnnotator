@@ -19,8 +19,7 @@ for file in os.listdir(path):
         #read and process png file
         reader = png.Reader(filename = os.path.join(path, name + '.png'))
         width, height, rows, info = reader.read()
-        image = [numpy.uint16(row) for row in rows]
-        matrix = numpy.vstack(image)
+        matrix = numpy.vstack([row for row in rows])
         print(width, height)
         print(matrix)
         print(len(matrix))
@@ -53,4 +52,6 @@ for file in os.listdir(path):
                     
 
         outfile = open(os.path.join('output', name + '_annotated.png'), 'wb')
-        #writer = png.Writer()
+        writer = png.Writer(width = width, height = height, **info)
+        writer.write(outfile, matrix)
+        outfile.close()
